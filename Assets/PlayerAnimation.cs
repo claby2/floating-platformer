@@ -9,6 +9,7 @@ public class PlayerAnimation : MonoBehaviour {
 
     private PlayerControl playerControl;
     private Rigidbody2D playerRb;
+    private bool isMoveStopped = false;
 
     void Start() {
         playerControl = Player.GetComponent<PlayerControl>();
@@ -18,12 +19,20 @@ public class PlayerAnimation : MonoBehaviour {
     void Update() {
         animator.SetFloat("horizontal", Mathf.Abs(playerRb.velocity.x));
         animator.SetBool("isJump", playerRb.velocity.y > 0.01);
-        animator.SetBool("isMoveStopped", (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D)));
+        animator.SetBool("isMoveStopped", isMoveStopped);
+
+        if((Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))) {
+            isMoveStopped = true;
+        }
 
         if(playerControl.horizontalMove < 0) {
             spriteRenderer.flipX = true;
         } else if(playerControl.horizontalMove > 0) {
             spriteRenderer.flipX = false;
         }
+    }
+
+    public void SetMoveStoppedNegative() {
+        isMoveStopped = false;
     }
 }
